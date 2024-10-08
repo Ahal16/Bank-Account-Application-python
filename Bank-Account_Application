@@ -1,0 +1,76 @@
+class ATM:
+    def __init__(self, balance=0):
+        self.balance = balance
+
+    def withdraw(self, amount):
+        if self.balance >= amount:
+            self.balance -= amount
+            return True
+        else:
+            return False
+    def deposit(self, amount):
+        self.balance += amount
+
+acc_info = {}
+account_counter = 1000
+
+def create_account():
+    global account_counter
+    name = input("Enter your name: ")
+    ini_balance = int(input("Enter your initial balance: "))
+    account_number = account_counter
+    account_counter += 1
+    acc_info[account_number] = {"name": name, "account": ATM(ini_balance)}  #initial balance
+
+    print(f"Account created successfully!\nName: {name}\nAccount Number: {account_number}\nBalance: {ini_balance}")
+
+def check_balance():
+    account_number = int(input("Enter your account number: "))
+    if account_number in acc_info:
+        user_info = acc_info[account_number]
+        print(f"Name: {user_info['name']}\nBalance: {user_info['account'].balance}")
+    else:
+        print("Account number not found.")
+
+def money_withdraw():
+    account_number = int(input("Enter your account number: "))
+    if account_number in acc_info:
+        amount = int(input("Enter the amount to withdraw: "))
+        user_info = acc_info[account_number]
+        if user_info['account'].withdraw(amount):
+            print(f"Withdrawal successful! New balance: {user_info['account'].balance}")
+        else:
+            print("Insufficient balance.")
+    else:
+        print("Account number not found.")
+
+def money_deposit():
+    account_number = int(input("Enter your account number: "))
+    if account_number in acc_info:
+        amount = int(input("Enter the amount to deposit: "))
+        acc_info[account_number]['account'].deposit(amount)
+        print(f"Deposit successful! New balance: {acc_info[account_number]['account'].balance}")
+    else:
+        print("Account number not found.")
+
+
+def main():
+    while True:
+        print("\n1. Create User Account\n2. Check Balance\n3. Withdraw Money\n4. Deposit Money\n5. Exit")
+        user_choice = int(input("Enter your choice: "))
+
+        if user_choice == 1:
+            create_account()
+        elif user_choice == 2:
+            check_balance()
+        elif user_choice == 3:
+            money_withdraw()
+        elif user_choice == 4:
+            money_deposit()
+        elif user_choice == 5:
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice. Please try again.")
+if __name__ == "__main__":
+    main()
